@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Photo & Signature Resizer for Pakistan Forms (CNIC, Passport, 20KB) - Free, No Signup</title>
+<meta name="description" content="Resize photos and signatures for Pakistan online forms: CNIC, passport, 20KB, 50KB. Free, no signup. Your image never leaves your phone.">
+<meta name="theme-color" content="#0f6b46">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"How do I resize a photo to 20KB for a Pakistan form?","acceptedAnswer":{"@type":"Answer","text":"Upload your photo, choose the 20KB photo preset, and download. The tool crops to the right size and lowers the quality until the file is under 20KB."}},
+{"@type":"Question","name":"What is the CNIC photo size?","acceptedAnswer":{"@type":"Answer","text":"The CNIC preset uses 35 x 45 mm (413 x 531 pixels at 300 DPI) and keeps the file under 300KB. Always confirm the requirement on the form or advertisement you are applying to."}},
+{"@type":"Question","name":"Is my photo uploaded to a server?","acceptedAnswer":{"@type":"Answer","text":"No. Resizing happens inside your browser. Your photo or signature is never sent to any server."}},
+{"@type":"Question","name":"Can I resize a signature to 20KB or 50KB?","acceptedAnswer":{"@type":"Answer","text":"Yes. Choose the Signature 20KB or Signature 50KB preset, or use Custom to set your own width, height and size limit."}}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#fbfaf6;--ink:#17211c;--muted:#5b6862;--green:#0f6b46;--mint:#e4efe8;--line:#d6ddd8;--warn:#a4341f;color-scheme:light}
+@media(prefers-color-scheme:dark){:root{--paper:#121a16;--ink:#eef2ef;--muted:#9aa8a1;--green:#4cc38a;--mint:#1b2a23;--line:#2c3a33;--warn:#ff8a73;color-scheme:dark}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.6 "Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:720px;margin:0 auto;padding:28px 18px 60px}
+h1,h2{font-family:"Bricolage Grotesque","Public Sans",system-ui,sans-serif;line-height:1.12;letter-spacing:-.02em;margin:0}
+h1{font-size:clamp(30px,7vw,46px);font-weight:800}
+h2{font-size:24px;font-weight:600;margin:44px 0 12px}
+.lead{color:var(--muted);margin:12px 0 26px;max-width:56ch}
+.tool{background:var(--mint);border:1px solid var(--line);border-radius:14px;padding:18px}
+.presets{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.presets button{font:500 15px "Public Sans",system-ui,sans-serif;padding:9px 13px;border-radius:999px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer}
+.presets button[aria-pressed=true]{background:var(--green);border-color:var(--green);color:#fff}
+.spec{margin:0 0 14px;font-size:15px;color:var(--muted)}
+.custom{display:none;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.custom.on{display:flex}
+.custom label{font-size:14px;color:var(--muted);display:flex;flex-direction:column;gap:4px}
+.custom input{width:96px;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);font:inherit}
+.drop{display:block;text-align:center;padding:26px 14px;border:2px dashed var(--green);border-radius:12px;cursor:pointer;font-weight:600;color:var(--green)}
+.drop input{position:absolute;opacity:0;width:1px;height:1px}
+.drop:focus-within{outline:3px solid var(--green);outline-offset:3px}
+#out{display:none;margin-top:18px;gap:16px;align-items:center;flex-wrap:wrap}
+#out.on{display:flex}
+#prev{max-width:180px;max-height:240px;border:1px solid var(--line);border-radius:8px;background:#fff}
+#info{flex:1;min-width:180px}
+#info b{font-size:22px}
+.btn{display:inline-block;margin-top:10px;padding:12px 20px;background:var(--green);color:#fff;font:600 16px "Public Sans",system-ui,sans-serif;border-radius:10px;text-decoration:none}
+@media(prefers-color-scheme:dark){.btn,.presets button[aria-pressed=true]{color:#06140d}}
+.err{color:var(--warn);font-weight:600}
+.note{font-size:14px;color:var(--muted);margin-top:12px}
+details{border-bottom:1px solid var(--line);padding:12px 0}
+summary{cursor:pointer;font-weight:600}
+details p{margin:8px 0 0;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}
+.scroll{overflow-x:auto}
+footer{margin-top:40px;font-size:14px;color:var(--muted)}
+</style>
+</head>
+<body>
+<main>
+<h1 id="h1">Photo &amp; signature resizer for Pakistan forms</h1>
+<p class="lead" id="lead">Resize to CNIC, passport, 20KB or 50KB in seconds. No signup. Your image stays on your phone.</p>
+
+<section class="tool" aria-label="Resizer tool">
+<div class="presets" id="presets" role="group" aria-label="Choose a preset"></div>
+<p class="spec" id="spec"></p>
+<div class="custom" id="custom">
+<label>Width (px)<input id="cw" type="number" min="20" max="4000" value="300"></label>
+<label>Height (px)<input id="ch" type="number" min="20" max="4000" value="400"></label>
+<label>Max size (KB)<input id="ck" type="number" min="5" max="2000" value="50"></label>
+</div>
+<label class="drop"><input id="file" type="file" accept="image/*">Choose photo or signature</label>
+<div id="out">
+<img id="prev" alt="Resized preview">
+<div id="info" aria-live="polite"></div>
+</div>
+</section>
+<p class="note">Requirements differ between forms. Check the size and KB limit in your form or job advertisement and use Custom if it differs from a preset.</p>
+
+<h2>Preset sizes</h2>
+<div class="scroll"><table>
+<tr><th>Preset</th><th>Size</th><th>Limit</th></tr>
+<tr><td>CNIC / NADRA photo</td><td>35 x 45 mm (413 x 531 px)</td><td>300 KB</td></tr>
+<tr><td>Passport photo</td><td>35 x 45 mm (413 x 531 px)</td><td>300 KB</td></tr>
+<tr><td>Photo 20KB</td><td>200 x 257 px</td><td>20 KB</td></tr>
+<tr><td>Photo 50KB</td><td>300 x 386 px</td><td>50 KB</td></tr>
+<tr><td>Signature 20KB</td><td>300 x 100 px</td><td>20 KB</td></tr>
+<tr><td>Signature 50KB</td><td>450 x 150 px</td><td>50 KB</td></tr>
+</table></div>
+
+<h2>How to resize a photo for a Pakistan online form</h2>
+<p>Pick the preset that matches your form, choose your photo, and download the result. The tool crops from the center to the right proportions, then lowers the JPEG quality until the file fits under the limit. For a clean result, start with a plain background and a face that fills most of the frame.</p>
+<p>Applying for admission, a government job, NADRA, or a passport? Most portals reject files that are too large or the wrong shape. Resize here first, then upload.</p>
+
+<h2>Is it safe?</h2>
+<p>Yes. The resizing runs entirely in your browser. Your CNIC photo and signature are never uploaded to a server.</p>
+
+<h2>Questions</h2>
+<details><summary>How do I resize a photo to 20KB for a Pakistan form?</summary><p>Choose the Photo 20KB preset, select your photo, and download. The tool lowers quality until the file is under 20KB.</p></details>
+<details><summary>What is the CNIC photo size?</summary><p>The CNIC preset uses 35 x 45 mm (413 x 531 pixels at 300 DPI) and keeps the file under 300KB. Confirm the requirement on your form.</p></details>
+<details><summary>Is my photo uploaded to a server?</summary><p>No. Everything happens in your browser.</p></details>
+<details><summary>Can I resize a signature to 20KB or 50KB?</summary><p>Yes. Choose Signature 20KB or Signature 50KB, or use Custom for your own width, height and limit.</p></details>
+
+<footer>Free tool. Works offline once the page has loaded.</footer>
+</main>
+<script>
+const P={
+cnic:{n:"CNIC photo",w:413,h:531,k:300,t:"CNIC Photo Resizer Pakistan (35x45mm, 300KB) - Free, No Signup",h1:"CNIC photo resizer",s:"35 x 45 mm, 413 x 531 px, up to 300 KB"},
+passport:{n:"Passport photo",w:413,h:531,k:300,t:"Passport Photo Resizer Pakistan (35x45mm) - Free, No Signup",h1:"Passport photo resizer for Pakistan",s:"35 x 45 mm, 413 x 531 px, up to 300 KB"},
+p20:{n:"Photo 20KB",w:200,h:257,k:20,t:"Resize Photo to 20KB for Pakistan Forms - Free, No Signup",h1:"Resize photo to 20KB",s:"200 x 257 px, up to 20 KB"},
+p50:{n:"Photo 50KB",w:300,h:386,k:50,t:"Resize Photo to 50KB for Pakistan Forms - Free, No Signup",h1:"Resize photo to 50KB",s:"300 x 386 px, up to 50 KB"},
+s20:{n:"Signature 20KB",w:300,h:100,k:20,t:"Resize Signature to 20KB for Pakistan Forms - Free, No Signup",h1:"Resize signature to 20KB",s:"300 x 100 px, up to 20 KB"},
+s50:{n:"Signature 50KB",w:450,h:150,k:50,t:"Resize Signature to 50KB for Pakistan Forms - Free, No Signup",h1:"Resize signature to 50KB",s:"450 x 150 px, up to 50 KB"},
+custom:{n:"Custom",w:0,h:0,k:0,s:"Set your own width, height and size limit"}
+};
+const PATHS={"cnic-photo-resize":"cnic","passport-photo-20kb-pakistan":"p20","passport-photo-resize":"passport","photo-resize-20kb":"p20","photo-resize-50kb":"p50","signature-resize-20kb":"s20","signature-resize-50kb":"s50"};
+const $=id=>document.getElementById(id);
+let cur="cnic",img=null,url=null;
+const box=$("presets");
+Object.keys(P).forEach(k=>{const b=document.createElement("button");b.type="button";b.textContent=P[k].n;b.dataset.k=k;b.onclick=()=>pick(k,true);box.appendChild(b)});
+function pick(k,manual){
+cur=k;const p=P[k];
+box.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.k===k));
+$("spec").textContent=p.s;$("custom").classList.toggle("on",k==="custom");
+if(!manual&&p.t){document.title=p.t;$("h1").textContent=p.h1}
+if(img)run();
+}
+const seg=location.pathname.split("/").filter(Boolean).pop();
+pick(PATHS[seg]||"cnic",false);
+$("file").onchange=e=>{
+const f=e.target.files[0];if(!f)return;
+const i=new Image();i.onload=()=>{img=i;run()};
+i.onerror=()=>show('<span class="err">This file could not be read. Choose a JPG or PNG photo.</span>');
+i.src=URL.createObjectURL(f);
+};
+["cw","ch","ck"].forEach(id=>$(id).oninput=()=>img&&cur==="custom"&&run());
+function show(h){$("out").classList.add("on");$("info").innerHTML=h}
+function toBlob(c,q){return new Promise(r=>c.toBlob(r,"image/jpeg",q))}
+async function run(){
+let w,h,kb;
+if(cur==="custom"){w=+$("cw").value;h=+$("ch").value;kb=+$("ck").value}else{({w,h,k:kb}=P[cur])}
+if(!(w>=20&&h>=20&&kb>=5)){show('<span class="err">Enter a width, height and size limit.</span>');return}
+show("Resizing...");
+const limit=kb*1024;
+let cw=w,ch=h,blob,q;
+for(let s=0;s<8;s++){
+const c=document.createElement("canvas");c.width=cw;c.height=ch;
+const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,cw,ch);
+const sc=Math.max(cw/img.width,ch/img.height),sw=cw/sc,sh=ch/sc;
+x.drawImage(img,(img.width-sw)/2,(img.height-sh)/2,sw,sh,0,0,cw,ch);
+let lo=.05,hi=.95;blob=await toBlob(c,lo);
+if(blob.size>limit){cw=Math.round(cw*.85);ch=Math.round(ch*.85);continue}
+for(let i=0;i<7;i++){const m=(lo+hi)/2,b=await toBlob(c,m);if(b.size<=limit){lo=m;blob=b}else hi=m}
+q=lo;break;
+}
+if(!blob||blob.size>limit){show('<span class="err">Could not reach '+kb+' KB. Try a larger limit or a different photo.</span>');return}
+if(url)URL.revokeObjectURL(url);
+url=URL.createObjectURL(blob);$("prev").src=url;
+const small=cw!==w;
+show("<b>"+(blob.size/1024).toFixed(1)+" KB</b><br>"+cw+" x "+ch+" px"+(small?" (reduced to fit the limit)":"")+'<br><a class="btn" download="'+P[cur].n.toLowerCase().replace(/\W+/g,"-")+'.jpg" href="'+url+'">Download JPG</a>');
+}
+</script>
+</body>
+</html>
